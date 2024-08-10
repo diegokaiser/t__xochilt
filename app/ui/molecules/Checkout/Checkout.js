@@ -185,7 +185,7 @@ const Checkout = () => {
               <div className="w-6/12">
                 {orders && (
                   <>
-                    {orders.status == 'Abierto' ? (
+                    {orders.status !== 'Completado' ? (
                       <>
                         <h3
                           className='font-semibold mb-4 text-xl text-center'
