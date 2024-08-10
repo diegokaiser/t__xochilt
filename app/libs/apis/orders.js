@@ -34,7 +34,8 @@ const orders = {
     const orderRef = collection(db, 'orders')
     const ordersQuery = query(
       orderRef,
-      where('mesaUid', '==', uid)
+      where('mesaUid', '==', uid),
+      where('status', '!==', 'Completado')
     )
 
     return onSnapshot(ordersQuery, (querySnapshot) => {
