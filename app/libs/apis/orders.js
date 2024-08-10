@@ -35,7 +35,7 @@ const orders = {
     const ordersQuery = query(
       orderRef,
       where('mesaUid', '==', uid),
-      where('status', '!==', 'Completado')
+      where('status', '!=', 'Completado')
     )
 
     return onSnapshot(ordersQuery, (querySnapshot) => {
