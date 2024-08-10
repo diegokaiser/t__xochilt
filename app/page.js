@@ -108,9 +108,6 @@ export default function Home() {
             <Link href="#">Olvidé mi contraseña</Link>
           </div>
            */}
-          3MiJ6R2glGF2Ql
-
-          cB&A(H5QQTsWXMgf
         </div>
       </div>
     </div>

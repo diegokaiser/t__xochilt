@@ -71,12 +71,17 @@ export default function OrdenesPage() {
                   >
                     Items
                   </Link>
-                  <button
-                    className='btn btn-secondary uppercase'
-                    onClick={handleLogout}
-                  >
-                    Cerrar turno
-                  </button>
+                  {
+                    /**
+                     * 
+                      <button
+                        className='btn btn-secondary uppercase'
+                        onClick={handleLogout}
+                      >
+                        Cerrar turno
+                      </button>
+                     */
+                  }
                 </>
               )}
               {thisUser.rol == 'Cocinero' && (
