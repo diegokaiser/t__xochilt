@@ -106,6 +106,7 @@ export default function OrdenPage() {
               <div className='text-sm'>======================================</div>
               <table className='w-full'>
                 <tbody>
+                  {/**
                   <tr>
                     <td className='pr-2 py-1' style={{ verticalAlign: 'top' }}>
                       <span>
@@ -118,18 +119,7 @@ export default function OrdenPage() {
                       </span>
                     </td>
                   </tr>
-                  <tr>
-                    <td className='pr-2 py-1' style={{ verticalAlign: 'top' }}>
-                      <span>
-                        IVA 10%
-                      </span>
-                    </td>
-                    <td className='px-2 py-1 text-right' style={{ verticalAlign: 'top' }}>
-                      <span>
-                        {parsePrice(order.total * 0.1)}
-                      </span>
-                    </td>
-                  </tr>
+                  */}
                   <tr>
                     <td className='pr-2 py-1' style={{ verticalAlign: 'top' }}>
                       <span className='text-2xl'>
@@ -138,7 +128,7 @@ export default function OrdenPage() {
                     </td>
                     <td className='px-2 py-1 text-right' style={{ verticalAlign: 'top' }}>
                       <span className='text-2xl'>
-                        {parsePrice(order.total + (order.total * 0.1))}
+                        {parsePrice(order.total)}
                       </span>
                     </td>
                   </tr>

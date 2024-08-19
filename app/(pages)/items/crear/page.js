@@ -86,7 +86,6 @@ export default function ItemCrear() {
             </div>
             <div className="mb-4">
               <select
-                defaultValue='Extras'
                 onChange={(e) => setTipo(e.target.value)}
                 required
               >
