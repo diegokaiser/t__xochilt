@@ -146,6 +146,8 @@ export default function MesasPage() {
                   <div className='text-sm'>======================================</div>
                   <table className='w-full'>
                     <tbody>
+                      {/**
+                       * 
                       <tr>
                         <td className='pr-2 py-1' style={{ verticalAlign: 'top' }}>
                           <span>
@@ -158,18 +160,7 @@ export default function MesasPage() {
                           </span>
                         </td>
                       </tr>
-                      <tr>
-                        <td className='pr-2 py-1' style={{ verticalAlign: 'top' }}>
-                          <span>
-                            IVA 10%
-                          </span>
-                        </td>
-                        <td className='px-2 py-1 text-right' style={{ verticalAlign: 'top' }}>
-                          <span>
-                            {parsePrice(orders.total * 0.1)}
-                          </span>
-                        </td>
-                      </tr>
+                       */}
                       <tr>
                         <td className='pr-2 py-1' style={{ verticalAlign: 'top' }}>
                           <span className='text-2xl'>
@@ -178,7 +169,7 @@ export default function MesasPage() {
                         </td>
                         <td className='px-2 py-1 text-right' style={{ verticalAlign: 'top' }}>
                           <span className='text-2xl'>
-                            {parsePrice(orders.total + (orders.total * 0.1))}
+                            {parsePrice(orders.total)}
                           </span>
                         </td>
                       </tr>
