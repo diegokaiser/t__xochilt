@@ -1,4 +1,4 @@
-import { addDoc, collection, doc, onSnapshot, orderBy, query, updateDoc, where } from 'firebase/firestore'
+import { addDoc, collection, doc, getDoc, onSnapshot, orderBy, query, updateDoc, where } from 'firebase/firestore'
 import { db } from '@/app/libs/utils/firebase'
 
 const orders = {
@@ -60,11 +60,6 @@ const orders = {
     const orderRef = doc(db, 'orders', uid)
 
     await updateDoc(orderRef, order)
-    const updatedOrderDoc = await getDoc(orderRef)
-    return {
-      uid: updatedOrderDoc.id,
-      ...updatedOrderDoc.doc()
-    }
   },
 
   TerminateOrder: async (uid) => {

@@ -109,14 +109,6 @@ export default function OrderCrear() {
     }
   }
 
-  const handleModifyOrder = async (e) => {
-
-  }
-
-  const handleTerminateOrder = async () => {
-
-  }
-
   const filteredItems = items?.filter(
     item => item.nombre.toLowerCase().includes(searchTerm.toLowerCase())
   )
@@ -189,6 +181,7 @@ export default function OrderCrear() {
     }
     getFormMesa()
   }, [])
+  console.log(`itemsOrder: ${itemsOrder}`)
 
   return (
     <>
@@ -383,6 +376,8 @@ export default function OrderCrear() {
             )}
             {activeMesa == 'Activo' ? (
               <>
+                {/** 
+                 * 
                 <div className="mb-4">
                   <button
                     className='btn btn-primary w-full uppercase'
@@ -401,6 +396,7 @@ export default function OrderCrear() {
                     Generar ticket
                   </button>
                 </div>
+                */}
               </>
             ) : (
               <>

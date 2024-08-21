@@ -54,6 +54,10 @@ export default function MesasPage() {
     }
   }
 
+  const gotoOrder = () => {
+    router.push(`/ordenes/${orders.uid}`)
+  }
+
   useEffect(() => {
     setLoading(true)
     const fetchData = () => {
@@ -182,14 +186,12 @@ export default function MesasPage() {
               )}
               {table.status == 'Activo' && (
                 <>
-                  {/**
-                   * 
                   <button
                     className='btn btn-success uppercase'
+                    onClick={gotoOrder}
                   >
                     Modificar orden
                   </button>
-                  */}
                   <button
                     className='btn btn-primary uppercase'
                     onClick={handleTerminateOrder}
