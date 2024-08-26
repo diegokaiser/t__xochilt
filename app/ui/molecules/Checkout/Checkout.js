@@ -224,14 +224,17 @@ const Checkout = () => {
                             </tbody>
                           </table>
                           <br />
+                          {/**
+                           * 
                           <p>
                             <strong>Subtotal: </strong> {parsePrice(orders.total)}
                           </p>
                           <p>
                             <strong>IVA 10%: </strong> {parsePrice(orders.total * 0.1)}
                           </p>
+                          */}
                           <p>
-                            <strong>Total: </strong> {parsePrice(orders.total + (orders.total * 0.1))}
+                            <strong>Total: </strong> {parsePrice(orders.total)}
                           </p>
                         </div>
                         <br />
