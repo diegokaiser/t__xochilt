@@ -13,6 +13,8 @@
     "@phosphor-icons/react": "^2.1.5",
     "axios": "^1.7.2",
     "bcryptjs": "^2.4.3",
+    "escpos": "^3.0.0-alpha.6",
+    "escpos-usb": "^3.0.0-alpha.4",
     "firebase": "^10.12.4",
     "firebase-admin": "^12.1.1",
     "lodash": "^4.17.21",
@@ -21,7 +23,6 @@
     "react-dom": "^18",
     "react-hot-toast": "^2.4.1",
     "react-modal": "^3.16.1",
-    "react-to-print": "^2.15.1",
     "universal-cookie": "^4.0.4"
   },
   "devDependencies": {
