@@ -1,14 +1,10 @@
-import React, { useEffect, useRef, useState } from "react"
-import Image from "next/image";
-import { useReactToPrint } from "react-to-print";
+import React, { useEffect, useState } from "react"
 import Apis from '@/app/libs/apis'
 import { parsePrice, timeFormat } from '@/app/libs/utils'
 import LoadingScreen from "@/app/ui/molecules/LoadingScreen";
-import { TemplateContext } from "next/dist/shared/lib/app-router-context.shared-runtime";
 
 const Checkout = () => {
   const [loading, setLoading] = useState(false)
-  const [printers, setPrinters] = useState(null)
   const [printInfo, setPrintInfo] = useState(false)
   const [tables, setTables] = useState(null)
   const [orders, setOrders] = useState(null)
@@ -30,86 +26,49 @@ const Checkout = () => {
     getOrders(uid)
   }
 
-  const getPrinters = async () => {
-    try {
-      const { data } = await Apis.print.GetPrinters()
-      setPrinters(data.toString())
-    } catch (error) {
-      console.info('molecules/Checkout/generateTP.js getOrders')
-      console.error(`Error al obtener impresoras: ${error}`)
-    }
-  }
-
   const postPrinters = async (template) => {
     try {
-      const { data } = await Apis.print.PostPrinters(template)
-      setPrintInfo(data)
+      const res = await Apis.print.PostPrint(template)
+      if ( res ) {
+        // TODO: toast success
+        console.log('Se imprimio correctamente')
+      }
     } catch (error) {
-      console.info('molecules/Checkout/generateTP.js getOrders')
-      console.error(`Error al obtener impresoras: ${error}`)
+      console.info('molecules/Checkout/Checkout.js postPrinters')
+      console.error(`Error al imprimir ticket: ${error}`)
     }
   }
 
   const generateTP = async () => {
-    getPrinters()
-    const thisElement = document.querySelector('.clonethis')
-    const htmlAImprimir = thisElement.innerHTML
-    const html = `
-      <!DOCTYPE html>
-      <html lang="es">
-      <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Ticket</title>
-        <style>
-          body {
-            font-family: Arial, Helvetica, sans-serif;
-          }
+    const items = orders.items.map(item => ({
+      quantity: item.cantidad,
+      description: item.nombre,
+      unitPrice: parsePrice(item.precioUnitario),
+      totalPrice: parsePrice(item.precioTotal )
+    }))
 
-          table {
-            border-collapse: collapse;
-          }
-
-          table,
-          th,
-          td {
-            border: 1px solid black;
-          }
-
-          th,
-          td {
-            padding: 5px;
-          }
-
-          th {
-            font-weight: bold;
-          }
-        </style>
-      </head>
-      <body>
-        ${htmlAImprimir}
-      </body>
-      </html>
-    `
-    const template = JSON.stringify({
-      nombreImpresora: printers,
-      serial: '',
-      operaciones: [
-        {
-          nombre: "Iniciar",
-          argumentos: []
-        },
-        {
-          nombre: "GenerarImagenAPartirDeHtmlEImprimir",
-          "argumentos": [
-            html,
-            580,
-            580,
-            0
-          ]
-        }
-      ]
-    })
+    const template = {
+      header: `
+        FECHA: ${timeFormat(orders.createdAt)}
+        MESA: ${orders.mesa}
+        CAMARERO: ${orders.encargado.nombre}
+      `,
+      columns: [
+        { text: 'CANT', align: 'LEFT', width: 0.1 },
+        { text: 'DESC', align: 'CENTER', width: 0.5 },
+        { text: 'P. UNIT', align: 'RIGHT', width: 0.2 },
+        { text: 'P. TOTAL', align: 'RIGHT', width: 0.2 },
+      ],
+      items: items.map(item => [
+        { text: `${item.quantity}`, align: 'LEFT', width: 0.1 },
+        { text: `${item.description}`, align: 'CENTER', width: 0.5 },
+        { text: `${item.unitPrice}`, align: 'RIGHT', width: 0.2 },
+        { text: `${item.totalPrice}`, align: 'RIGHT', width: 0.2 },
+      ]),
+      footer: `
+        TOTAL: ${parsePrice(orders.total)}
+      `
+    }
     postPrinters(template)
   }
 

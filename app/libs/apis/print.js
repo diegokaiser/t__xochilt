@@ -1,11 +1,14 @@
 import instance from "./instance"
 
 const print = {
-  GetPrinters: async () =>
-    await instance.get('impresoras'),
-
-  PostPrinters: async ( print ) =>
-    await instance.post('imprimir', print)
+  PostPrint: async (template) => {
+    return await instance.post(
+      '/printers',
+      {
+        body: JSON.stringify({ template })
+      }
+    )
+  }
 }
 
 export default print
