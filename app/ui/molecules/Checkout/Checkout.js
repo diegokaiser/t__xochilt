@@ -28,8 +28,9 @@ const Checkout = () => {
 
   const postPrinters = async (template) => {
     try {
-      const res = await Apis.print.PostPrint(template)
-      if ( res ) {
+      const res = await Apis.print.PostPrint({ print: { template } })
+      console.log(res)
+      if ( res.code == 200 ) {
         // TODO: toast success
         console.log('Se imprimio correctamente')
       }
@@ -48,26 +49,18 @@ const Checkout = () => {
     }))
 
     const template = {
-      header: `
-        FECHA: ${timeFormat(orders.createdAt)}
-        MESA: ${orders.mesa}
-        CAMARERO: ${orders.encargado.nombre}
-      `,
-      columns: [
-        { text: 'CANT', align: 'LEFT', width: 0.1 },
-        { text: 'DESC', align: 'CENTER', width: 0.5 },
-        { text: 'P. UNIT', align: 'RIGHT', width: 0.2 },
-        { text: 'P. TOTAL', align: 'RIGHT', width: 0.2 },
+      header: [
+        { text: `FECHA: ${timeFormat(orders.createdAt)}` },
+        { text: `MESA: ${orders.mesa}` },
+        { text: `CAMARERO: ${orders.encargado.nombre}` }
       ],
       items: items.map(item => [
-        { text: `${item.quantity}`, align: 'LEFT', width: 0.1 },
-        { text: `${item.description}`, align: 'CENTER', width: 0.5 },
-        { text: `${item.unitPrice}`, align: 'RIGHT', width: 0.2 },
-        { text: `${item.totalPrice}`, align: 'RIGHT', width: 0.2 },
+        { quantity: `${item.quantity}` },
+        { description: `${item.description}` },
+        { unitPrice: `${item.unitPrice}` },
+        { totalPrice: `${item.totalPrice}` },
       ]),
-      footer: `
-        TOTAL: ${parsePrice(orders.total)}
-      `
+      footer: `TOTAL: ${parsePrice(orders.total)}`
     }
     postPrinters(template)
   }

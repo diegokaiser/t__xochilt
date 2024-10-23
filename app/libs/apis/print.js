@@ -1,13 +1,28 @@
-import instance from "./instance"
-
 const print = {
   PostPrint: async (template) => {
-    return await instance.post(
-      '/printers',
-      {
-        body: JSON.stringify({ template })
+    console.log(template)
+    try {
+      const response = await fetch('http://localhost:3000/printers', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(template)
+      })
+
+      if ( response.ok ) {
+        const result = await response.json()
+        console.log('Impresión exitosa', result)
+        return result
+      } else {
+        const error = await response.json()
+        console.log('Error en la impresión', error)
+        return error
       }
-    )
+    } catch (error) {
+      console.error('Error al intentar imprimir:', error)
+      throw error
+    }
   }
 }
 
