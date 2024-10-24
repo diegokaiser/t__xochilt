@@ -55,18 +55,25 @@ export default function ItemsPage() {
                 <>
                   {
                     items.map(item => (
-                      <Link
-                        href={`/items/${item.uid}`}
+                      <div
                         key={item.uid}
                         className='item flex items-center justify-between pb-3 pt-3'
                       >
                         <span>{item.nombre}</span>
                         <span>{parsePrice(item.precio)}€</span>
                         {/**
-                         * 
-                        <span>{item.tipo}</span>
-                         */}
-                      </Link>
+                        <Link
+                          href={`/items/${item.uid}`}
+                          key={item.uid}
+                          className='item flex items-center justify-between pb-3 pt-3'
+                        >
+                          <span>{item.nombre}</span>
+                          <span>{parsePrice(item.precio)}€</span>
+                           * 
+                          <span>{item.tipo}</span>
+                        </Link>
+                        */}
+                      </div>
                     ))
                   }
                 </>
