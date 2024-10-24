@@ -90,6 +90,8 @@ export default function ItemCrear() {
                 required
               >
                 <option value='0'>Seleccionar tipo</option>
+                <option value='Duos'>Duos</option>
+                <option value='Entrantes'>Entrantes</option>
                 <option value='Platos'>Platos</option>
                 <option value='Postres'>Postres</option>
                 <option value='Bebidas y Cocktails'>Bebidas y Cocktails</option>
