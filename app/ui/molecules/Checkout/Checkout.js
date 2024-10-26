@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react"
 import Apis from '@/app/libs/apis'
-import { parsePrice, timeFormat } from '@/app/libs/utils'
+import { hourFormat, parsePrice, timeFormat } from '@/app/libs/utils'
 import LoadingScreen from "@/app/ui/molecules/LoadingScreen";
 
 const Checkout = () => {
@@ -146,7 +146,7 @@ const Checkout = () => {
                         </h3>
                         <div className="clonethis">
                           <p>
-                            {timeFormat(orders.createdAt)}
+                            {timeFormat(orders.createdAt)} - {hourFormat(orders.createdAt)}
                           </p>
                           <p>
                             {orders.mesa}
