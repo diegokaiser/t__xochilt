@@ -224,6 +224,28 @@ export default function OrderCrear() {
                 <div className="mb-4">
                   <button
                     className='btn btn-info w-full uppercase'
+                    data-tipo='Dúos'
+                    type='button'
+                    onClick={(e) => openItems(e)}
+                  >
+                    <PlusCircle size={21} />
+                    Dúos
+                  </button>
+                </div>
+                <div className="mb-4">
+                  <button
+                    className='btn btn-info w-full uppercase'
+                    data-tipo='Entrantes'
+                    type='button'
+                    onClick={(e) => openItems(e)}
+                  >
+                    <PlusCircle size={21} />
+                    Entrantes
+                  </button>
+                </div>
+                <div className="mb-4">
+                  <button
+                    className='btn btn-info w-full uppercase'
                     data-tipo='Platos'
                     type='button'
                     onClick={(e) => openItems(e)}
