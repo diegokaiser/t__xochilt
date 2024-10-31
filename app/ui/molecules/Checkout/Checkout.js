@@ -8,6 +8,8 @@ const Checkout = () => {
   const [printInfo, setPrintInfo] = useState(false)
   const [tables, setTables] = useState(null)
   const [orders, setOrders] = useState(null)
+  const [discounts, setDiscounts] = useState({})
+  const [disabledInputs, setDisabledInputs] = useState({})
 
   const getOrders = (uid) => {
     try {
@@ -66,7 +68,6 @@ const Checkout = () => {
   }
 
   const terminateOrderAndOpenTable = async (table, order) => {
-    console.log(table, order)
     try {
       Apis.orders.TerminateOrder(order)
     } catch (error) {
@@ -96,6 +97,31 @@ const Checkout = () => {
     }
     fetchData()
   }, [])
+
+  const handleDiscountChange = (index, value) => {
+    setDiscounts((prev) => ({ ...prev, [index]: value }))
+  }
+
+  const applyDiscount = (index) => {
+    const discount = parseFloat(discounts[index]) || 0
+    const updatedOrders = { ...orders }
+    const item = updatedOrders.items[index]
+
+    const discountedUnitPrice = item.precioUnitario - ((item.precioUnitario * discount) / 100)
+    const newTotalPrice = discountedUnitPrice * item.cantidad
+
+    updatedOrders.items[index] = {
+      ...item,
+      precioUnitario: discountedUnitPrice,
+      precioTotal: newTotalPrice
+    }
+
+    const newTotal = updatedOrders.items.reduce((acc, item) => acc + item.precioTotal, 0)
+    updatedOrders.total = newTotal
+
+    setOrders(updatedOrders)
+    setDisabledInputs((prev) => ({ ...prev, [index]: true }))
+  }
 
   return (
     <>
@@ -127,14 +153,12 @@ const Checkout = () => {
                     </button>
                   ))}
                 </>
-              ) : (
-                <></>
-              )}
+              ) : null}
             </div>
           </div>
           <div className="w-6/12">
             <div className="w-full flex gap-4 items-start justify-between">
-              <div className="w-6/12">
+              <div className="w-8/12">
                 {orders && (
                   <>
                     {orders.status !== 'Completado' ? (
@@ -157,7 +181,7 @@ const Checkout = () => {
                           <br />
                           <table style={{ width: '100%' }}>
                             <tbody>
-                              {orders.items.map(item => (
+                              {orders.items.map((item, index) => (
                                 <tr key={item.uid}>
                                   <td style={{ padding: '0.25rem 0.5rem 0.25rem 0', verticalAlign: 'top' }}>
                                     {item.cantidad}
@@ -171,11 +195,31 @@ const Checkout = () => {
                                   <td style={{ padding: '0.25rem 0 0.25rem 0.5rem', textAlign: 'right', verticalAlign: 'top' }}>
                                     {parsePrice(item.precioTotal)}
                                   </td>
+                                  <td>
+                                    <div className="flex xo__dscto">
+                                      <input 
+                                        name={`dsctoAmount-${index}`}
+                                        className="ml-4 mr-2"
+                                        type="number"
+                                        value={discounts[index] || ''}
+                                        onChange={(e) => handleDiscountChange(index, e.target.value)}
+                                        disabled={!!disabledInputs[index]}
+                                      />
+                                      <button
+                                        name={`handleDscto-${index}`}
+                                        className="btn btn-info"
+                                        type="button"
+                                        onClick={() => applyDiscount(index)}
+                                        disabled={!!disabledInputs[index]}
+                                      >
+                                        APLICAR
+                                      </button>
+                                    </div>
+                                  </td>
                                 </tr>
                               ))}
                             </tbody>
                           </table>
-                          <br />
                           {/**
                            * 
                           <p>
@@ -220,7 +264,7 @@ const Checkout = () => {
                   </>
                 )}
               </div>
-              <div className="w-6/12">
+              <div className="w-4/12">
               </div>
             </div>
           </div>

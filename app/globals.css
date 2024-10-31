@@ -189,3 +189,12 @@
     border-radius: 7px;
   }
 }
+
+.xo__dscto {
+  input {
+    width: 95px;
+  }
+  button {
+    width: 95px;
+  }
+}
