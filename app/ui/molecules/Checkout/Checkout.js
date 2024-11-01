@@ -9,12 +9,18 @@ const Checkout = () => {
   const [tables, setTables] = useState(null)
   const [orders, setOrders] = useState(null)
   const [discounts, setDiscounts] = useState({})
+  const [originalPrices, setOriginalPrices] = useState({});
   const [disabledInputs, setDisabledInputs] = useState({})
 
   const getOrders = (uid) => {
     try {
       Apis.orders.GetOrdersByTable(uid, (data) => {
         setOrders(data[0])
+        const initialPrices = data[0].items.reduce((acc, item, index) => {
+          acc[index] = { precioUnitario: item.precioUnitario, precioTotal: item.precioTotal };
+          return acc;
+        }, {});
+        setOriginalPrices(initialPrices);
       })
     } catch (error) {
       console.info('molecules/Checkout/Checkout.js getOrders')
@@ -35,6 +41,7 @@ const Checkout = () => {
       if ( res.code == 200 ) {
         // TODO: toast success
         console.log('Se imprimio correctamente')
+        setPrintInfo(true)
       }
     } catch (error) {
       console.info('molecules/Checkout/Checkout.js postPrinters')
@@ -70,11 +77,6 @@ const Checkout = () => {
   const terminateOrderAndOpenTable = async (table, order) => {
     try {
       Apis.orders.TerminateOrder(order)
-    } catch (error) {
-      console.info('molecules/Checkout/Checkout.js terminateOrderAndOpenTable')
-      console.error(`Error al terminar la orden: ${error}`)
-    }
-    try {
       Apis.tables.OpenTable(table)
     } catch (error) {
       console.info('molecules/Checkout/Checkout.js terminateOrderAndOpenTable')
@@ -123,6 +125,22 @@ const Checkout = () => {
     setDisabledInputs((prev) => ({ ...prev, [index]: true }))
   }
 
+  const resetDiscount = (index) => {
+    const updatedOrders = { ...orders }
+    updatedOrders.items[index] = {
+      ...updatedOrders.items[index],
+      precioUnitario: originalPrices[index].precioUnitario,
+      precioTotal: originalPrices[index].precioTotal
+    }
+
+    const newTotal = updatedOrders.items.reduce((acc, item) => acc + item.precioTotal, 0)
+    updatedOrders.total = newTotal
+
+    setOrders(updatedOrders)
+    setDiscounts((prev) => ({ ...prev, [index]: '' }))
+    setDisabledInputs((prev) => ({ ...prev, [index]: false }))
+  }
+
   return (
     <>
       {loading && <LoadingScreen />}
@@ -158,7 +176,7 @@ const Checkout = () => {
           </div>
           <div className="w-6/12">
             <div className="w-full flex gap-4 items-start justify-between">
-              <div className="w-8/12">
+              <div className="w-10/12">
                 {orders && (
                   <>
                     {orders.status !== 'Completado' ? (
@@ -214,6 +232,14 @@ const Checkout = () => {
                                       >
                                         APLICAR
                                       </button>
+                                      <button
+                                        name={`handleReset-${index}`}
+                                        className="btn btn-danger ml-2"
+                                        type="button"
+                                        onClick={() => resetDiscount(index)}
+                                      >
+                                        RESET
+                                      </button>
                                     </div>
                                   </td>
                                 </tr>
@@ -264,7 +290,7 @@ const Checkout = () => {
                   </>
                 )}
               </div>
-              <div className="w-4/12">
+              <div className="w-2/12">
               </div>
             </div>
           </div>
