@@ -181,7 +181,6 @@ export default function OrderCrear() {
     }
     getFormMesa()
   }, [])
-  console.log(`itemsOrder: ${itemsOrder}`)
 
   return (
     <>
@@ -279,7 +278,7 @@ export default function OrderCrear() {
                 <div className="mb-4">
                   <button
                     className='btn btn-info w-full uppercase'
-                    data-tipo='Menu'
+                    data-tipo='Menús'
                     type='button'
                     onClick={(e) => openItems(e)}
                   >
