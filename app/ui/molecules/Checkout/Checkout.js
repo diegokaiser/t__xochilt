@@ -41,11 +41,13 @@ const Checkout = () => {
       if ( res.code == 200 ) {
         // TODO: toast success
         console.log('Se imprimio correctamente')
-        setPrintInfo(true)
+        
       }
     } catch (error) {
       console.info('molecules/Checkout/Checkout.js postPrinters')
       console.error(`Error al imprimir ticket: ${error}`)
+    } finally {
+      setPrintInfo(true)
     }
   }
 
