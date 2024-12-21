@@ -89,7 +89,7 @@ export default function ItemCrear() {
                 onChange={(e) => setTipo(e.target.value)}
                 required
               >
-                <option value='0'>Seleccionar tipo</option>
+                <option value=''>Seleccionar tipo</option>
                 <option value='Duos'>Duos</option>
                 <option value='Entrantes'>Entrantes</option>
                 <option value='Platos'>Platos</option>
@@ -98,6 +98,7 @@ export default function ItemCrear() {
                 <option value='Aguas frescas'>Aguas frescas</option>
                 <option value='Menús'>Menús</option>
                 <option value='Extras'>Extras</option>
+                <option value='Buffet'>Buffet</option>
               </select>
             </div>
             <div className="mb-4">

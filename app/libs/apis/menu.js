@@ -1,4 +1,4 @@
-import { addDoc, collection, doc, onSnapshot, query, updateDoc, where } from 'firebase/firestore'
+import { addDoc, collection, doc, getDoc, onSnapshot, query, updateDoc, where } from 'firebase/firestore'
 import { db } from '@/app/libs/utils/firebase'
 
 const menu = {
@@ -42,6 +42,24 @@ const menu = {
     })
   },
 
+  GetMenuTypes: (callback) => {
+    const menusRef = collection(db, 'items')
+
+    return onSnapshot(menusRef, (querySnapshot) => {
+      const typesSet = new Set()
+
+      querySnapshot.docs.forEach((doc) => {
+        const data = doc.data()
+        if (data.tipo) {
+          typesSet.add(data.tipo)
+        }
+      })
+
+      const uniqueTypes = Array.from(typesSet)
+      callback(uniqueTypes)
+    })
+  },
+
   PostMenu: async (menu) => {
     const docRef = await addDoc(collection(db, 'items'), menu)
 
@@ -54,11 +72,21 @@ const menu = {
   PatchMenu: async (uid, menu) => {
     const menuRef = doc(db, 'items', uid)
 
-    await updateDoc(menuRef, menu)
-    const updatedMenuDoc = await getDoc(menuRef)
-    return {
-      uid: updatedMenuDoc.id,
-      ...updatedMenuDoc.doc()
+    try {
+      await updateDoc(menuRef, menu)
+      const updatedMenuDoc = await getDoc(menuRef)
+
+      if (updatedMenuDoc.exists()) {
+        return {
+          uid: updatedMenuDoc.id,
+          ...updatedMenuDoc.data()
+        }
+      } else {
+        throw new Error('El documento no existe')
+      }
+    } catch (error) {
+      console.error(`Error actualizando el menú con uid ${uid}:`, error);
+      throw error
     }
   },
 
