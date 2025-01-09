@@ -28,11 +28,23 @@ const PageItemCrud = () => {
   const [items, setItems] = useState(null)
   const [filters, setFilters] = useState({
     global: { value: null, matchMode: FilterMatchMode.CONTAINS },
+    nombre: { value: null, matchMode: FilterMatchMode.STARTS_WITH },
     tipo: { value: null, matchMode: FilterMatchMode.EQUALS }
   })
   const [loading, setLoading] = useState(false)
   const [globalFilterValue, setGlobalFilterValue] = useState('')
   const [tipos, setTipos] = useState([])
+
+  const deleteItem = async (uid) => {
+    setLoading(true)
+    try {
+      await Apis.menu.DeleteMenu(uid)
+    } catch (error) {
+      console.log(error)
+    } finally {
+      //window.location.reload()
+    }
+  }
 
   const onGlobalFilterChange = e => {
     const value = e.target.value
@@ -90,6 +102,19 @@ const PageItemCrud = () => {
         className='p-column-filter'
         showClear
       />
+    )
+  }
+
+  const actionsBodyTemplate = (rowData) => {
+    return (
+      <>
+        <button
+          className='btn btn-danger'
+          onClick={() => deleteItem(rowData.uid)}
+        >
+          Eliiminar
+        </button>
+      </>
     )
   }
 
@@ -167,6 +192,11 @@ const PageItemCrud = () => {
                   body={typesBodyTemplate}
                   filter
                   filterElement={typesRowFilterTemplate}
+                />
+                <Column
+                  header='Acciones'
+                  body={actionsBodyTemplate}
+                  exportable={false}
                 />
               </DataTable>
             </div>

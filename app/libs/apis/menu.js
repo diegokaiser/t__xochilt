@@ -1,4 +1,4 @@
-import { addDoc, collection, doc, getDoc, onSnapshot, query, updateDoc, where } from 'firebase/firestore'
+import { addDoc, collection, deleteDoc, doc, getDoc, onSnapshot, query, updateDoc, where } from 'firebase/firestore'
 import { db } from '@/app/libs/utils/firebase'
 
 const menu = {
@@ -100,6 +100,18 @@ const menu = {
       ...updatedMenuDoc.doc()
     }
   },
+
+  DeleteMenu: async (uid) => {
+    const menuRef = doc(db, 'items', uid)
+  
+    try {
+      await deleteDoc(menuRef)
+      console.log(`Menú con uid ${uid} eliminado correctamente`)
+    } catch (error) {
+      console.error(`Error al eliminar el menú con uid ${uid}:`, error)
+      throw error
+    }
+  }
 }
 
 export default menu
